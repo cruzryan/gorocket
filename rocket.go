@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	rl "github.com/gen2brain/raylib-go/raylib"
-	"math"
 )
 
 //Rocket ...
@@ -34,14 +33,15 @@ type Rocket struct {
 }
 
 func (r *Rocket) draw() {
+	// TO-DO: Test rotation axis at y .2
 	rl.DrawModelEx(r.model, r.position, r.rotationAxis, r.angle, r.scale, r.color) // Draw 3d model with texture
 }
 
 func (r *Rocket) drawInfo() {
-	rl.DrawText("Yaw: "+fmt.Sprintf("%f", r.yaw), screenWidth-160, 20, 20, rl.DarkGray)
-	rl.DrawText("Pitch: "+fmt.Sprintf("%f", r.pitch), screenWidth-160, 40, 20, rl.DarkGray)
-	rl.DrawText("Roll: "+fmt.Sprintf("%f", r.roll), screenWidth-160, 60, 20, rl.DarkGray)
-	rl.DrawText("Fuel: "+fmt.Sprintf("%d", math.Floor(float64(r.fuel))), screenWidth-160, 80, 20, rl.DarkGreen)
+	rl.DrawText("Yaw: "+fmt.Sprintf("%g", r.yaw), screenWidth-160, 20, 20, rl.DarkGray)
+	rl.DrawText("Pitch: "+fmt.Sprintf("%g", r.pitch), screenWidth-160, 40, 20, rl.DarkGray)
+	rl.DrawText("Roll: "+fmt.Sprintf("%g", r.roll), screenWidth-160, 60, 20, rl.DarkGray)
+	rl.DrawText("Fuel: "+fmt.Sprintf("%g", r.fuel), screenWidth-160, 80, 20, rl.DarkGreen)
 }
 
 func (r *Rocket) setup() {
@@ -65,6 +65,7 @@ func (r *Rocket) reset() {
 
 func (r *Rocket) thrust(angle int) {
 
+	r.fuel -= flowRate / second
 }
 
 func (r *Rocket) waitForKeys() {
@@ -76,7 +77,7 @@ func (r *Rocket) waitForKeys() {
 func (r *Rocket) update() {
 	r.vy += gravity
 
-	r.position.Y += float32(r.vy / 6000)
+	r.position.Y += float32(r.vy / second)
 
 	if r.position.Y <= 0 {
 		r.position.Y = 0

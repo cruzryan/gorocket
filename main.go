@@ -17,6 +17,8 @@ const (
 	initialFuel = 391640          //L
 	flowRate    = 1451            // L / s
 
+	second = 6000 //To keep track of scale
+
 	rX = float32(0.0)
 	rY = float32(10.0)
 	rZ = float32(0.0)
