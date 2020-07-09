@@ -11,20 +11,22 @@ const (
 	screenHeight = int32(450)
 	gridSize     = int32(15)
 
-	thrust      = 7607 * (10 ^ 3) // N
-	gravity     = -9.8            // m/s
-	mass        = 549054          //kg
-	initialFuel = 391640          //L
-	flowRate    = 1451            // L / s
+	thrust      = int32(7607000)   // N
+	gravity     = -9.8             // m/s
+	mass        = int32(549054)    // kg
+	initialFuel = int32(391640)    // L
+	flowRate    = float32(34454.4) // L / s
 
-	second = 6000 //To keep track of scale
+	second = int32(6000) //To keep track of scale
 
 	rX = float32(0.0)
-	rY = float32(10.0)
+	rY = float32(0.0)
 	rZ = float32(0.0)
 )
 
-var ()
+var (
+	time = float32(0)
+)
 
 func setupCamera() rl.Camera3D {
 	c := rl.Camera3D{}
@@ -61,27 +63,27 @@ func main() {
 
 	rocket.setup()
 
-	//Rotate angle
-	//a := raymath.MatrixRotateX(rl.Deg2rad * 90)
-	//rocket.model.Transform = raymath.MatrixMultiply(rocket.model.Transform, a)
-
 	for !rl.WindowShouldClose() {
 
 		rl.UpdateCamera(&camera) // Update camera
-		rocket.waitForKeys()
-		rocket.update()
-
 		rl.BeginDrawing()
 		rl.BeginMode3D(camera)
 		rl.ClearBackground(rl.RayWhite)
+		rocket.waitForKeys()
+		rocket.update()
 
 		rocket.draw()
-		//Grid
+		//Gridtttt
 		rl.DrawGrid(gridSize, 1.0)
 		rl.EndMode3D()
 		rocket.drawInfo()
+		//Fix this
+		time += (1 / float32(second)) * 1000
+		// fmt.Println(rocket.position.Y)
+		rl.DrawText("T: "+fmt.Sprintf("%.2f", time)+" s", 10, 40, 20, rl.Gray)
 		rl.DrawFPS(10, 10)
 		rl.EndDrawing()
+
 	}
 
 	rl.CloseWindow()
